@@ -16,6 +16,8 @@ class Category(models.Model):
 class Wish(models.Model):
   title = models.CharField(max_length=50)
   description = models.TextField(blank=True)
+  created_at = models.DateTimeField(auto_now_add=True)
+  update_at = models.DateTimeField(auto_now=True)
   last_wish_at = models.DateTimeField(auto_now=True)
   images = models.ImageField(upload_to='images/wish_images')
   location = models.CharField(max_length=200, blank=True)
