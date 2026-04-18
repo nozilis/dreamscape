@@ -16,7 +16,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from dreamscape_app import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('categories/', views.CategoryListView.as_view(), name='category'),
+    path('wishes/', views.WishListView.as_view(), name='wish'),
 ]
