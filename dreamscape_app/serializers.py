@@ -7,7 +7,10 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = ['id', 'title']
 
 class WishSerializer(serializers.ModelSerializer):
-    category = CategorySerializer()
+    category = CategorySerializer(read_only=True)
+    category_id = serializers.PrimaryKeyRelatedField(
+        queryset=Category.objects.all(), source='category', write_only=True
+    )
     class Meta:
         model = Wish
         fields = ['title', 'description', 'last_wish_at', 'images', 'is_done', 'location', 'gift_url', 'category']
