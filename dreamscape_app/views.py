@@ -6,9 +6,7 @@ from .serializers import CategorySerializer, WishSerializer
 
 class CategoryViewSet(ModelViewSet):
     serializer_class = CategorySerializer
-
-    def get_queryset(self):
-        return Category.objects.all()
+    queryset = Category.objects.all()
 
 class WishViewSet(ModelViewSet):
     serializer_class = WishSerializer

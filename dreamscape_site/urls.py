@@ -20,8 +20,8 @@ from dreamscape_app import views
 from rest_framework import routers
 
 router = routers.SimpleRouter()
-router.register(r'categories', views.CategoryViewSet)
-router.register(r'wishes', views.WishViewSet)
+router.register(r'categories', views.CategoryViewSet, basename='category')
+router.register(r'wishes', views.WishViewSet, basename='wish')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
