@@ -19,7 +19,7 @@ class Wish(models.Model):
   created_at = models.DateTimeField(auto_now_add=True)
   update_at = models.DateTimeField(auto_now=True)
   last_wish_at = models.DateTimeField(auto_now=True)
-  images = models.ImageField(upload_to='images/wish_images')
+  images = models.ImageField(upload_to='images/wish_images', blank=True, null=True)
   location = models.CharField(max_length=200, blank=True)
   gift_url = models.URLField(max_length=1000, blank=True)
   is_done = models.BooleanField(default=False)
