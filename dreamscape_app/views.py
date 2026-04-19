@@ -1,18 +1,20 @@
 from django.shortcuts import render
-
-from rest_framework.views import APIView
+from rest_framework.viewsets import ModelViewSet 
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
 from .models import Category, Wish
 from .serializers import CategorySerializer, WishSerializer
 
-class CategoryListView(APIView):
-    def get(self, request):
-        categories = Category.objects.all()
-        serializer = CategorySerializer(categories, many=True)
-        return Response(serializer.data)
+class CategoryViewSet(ModelViewSet):
+    serializer_class = CategorySerializer
+    queryset = Category.objects.all()
 
-class WishListView(APIView):
-    def get(self, request):
-        wishes = Wish.objects.filter(user=request.user).order_by('-created_at')
-        serializer = WishSerializer(wishes, many=True)
-        return Response(serializer.data)
+class WishViewSet(ModelViewSet):
+    serializer_class = WishSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Wish.objects.filter(user=self.request.user).order_by('-created_at')
+
+    def perform_create(self, serializer):
+        return serializer.save(user=self.request.user)

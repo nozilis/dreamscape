@@ -17,9 +17,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from dreamscape_app import views
+from rest_framework import routers
+
+router = routers.SimpleRouter()
+router.register(r'categories', views.CategoryViewSet, basename='category')
+router.register(r'wishes', views.WishViewSet, basename='wish')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('categories/', views.CategoryListView.as_view(), name='category'),
-    path('wishes/', views.WishListView.as_view(), name='wish'),
 ]
+
+urlpatterns += router.urls
