@@ -17,4 +17,4 @@ class WishViewSet(ModelViewSet):
         return Wish.objects.filter(user=self.request.user).order_by('-created_at')
 
     def perform_create(self, serializer):
-        return serializer.save(user=self.request.user)
+        serializer.save(user=self.request.user)
