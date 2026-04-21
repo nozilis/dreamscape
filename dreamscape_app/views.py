@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from .models import Category, Wish
 from .serializers import CategorySerializer, WishSerializer
+from .permissions import UserAccessPermission
 
 class CategoryViewSet(ModelViewSet):
     serializer_class = CategorySerializer
@@ -11,7 +12,7 @@ class CategoryViewSet(ModelViewSet):
 
 class WishViewSet(ModelViewSet):
     serializer_class = WishSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, UserAccessPermission]
 
     def get_queryset(self):
         return Wish.objects.filter(user=self.request.user).order_by('-created_at')
