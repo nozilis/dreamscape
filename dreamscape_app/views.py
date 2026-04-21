@@ -5,6 +5,7 @@ from rest_framework.permissions import IsAuthenticated
 from .models import Category, Wish
 from .serializers import CategorySerializer, WishSerializer
 from .permissions import UserAccessPermission
+from django.db.models import Q
 
 class CategoryViewSet(ModelViewSet):
     serializer_class = CategorySerializer
@@ -15,7 +16,13 @@ class WishViewSet(ModelViewSet):
     permission_classes = [IsAuthenticated, UserAccessPermission]
 
     def get_queryset(self):
-        return Wish.objects.filter(user=self.request.user).order_by('-created_at')
-
+        user_id = int(self.request.query_params.get('user_id', 0))
+        if user_id == self.request.user.id:
+            return Wish.objects.filter(user=self.request.user).order_by('-created_at')
+        else:
+            return Wish.objects.filter(
+                user_id=user_id,
+                visibility__in=['public', 'link'])
+        
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
