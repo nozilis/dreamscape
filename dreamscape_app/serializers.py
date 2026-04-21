@@ -14,3 +14,24 @@ class WishSerializer(serializers.ModelSerializer):
     class Meta:
         model = Wish
         fields = ['title', 'description', 'last_wish_at', 'images', 'is_done', 'location', 'gift_url', 'category', 'category_id']
+
+class RegisterSerializer(serializers.ModelSerializer):
+    password_confirm = serializers.CharField(write_only=True)
+    
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'email', 'password', 'password_confirm']
+
+    def validate(self, attrs):
+        """Ensure both passwords match."""
+        if attrs['password'] != attrs['password_confirm']:
+            raise serializers.ValidationError({"password": "Passwords do not match."})
+        return attrs
+
+    def create(self, validated_data):
+        validated_data.pop('password_confirm') 
+        password = validated_data.pop('password')
+        user = User(**validated_data)
+        user.set_password(password)  
+        user.save()
+        return user
