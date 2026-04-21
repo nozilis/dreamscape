@@ -14,6 +14,37 @@ class Category(models.Model):
   title = models.CharField(max_length=64)
 
 class Wish(models.Model):
+  PRIVATE = 'private'
+  LINK = 'link'
+  PUBLIC = 'public'
+    
+  VISIBILITY_CHOICES = [
+      (PRIVATE, 'Private'),
+      (LINK, 'Link only'),
+      (PUBLIC, 'Public'),
+  ]
+    
+  visibility = models.CharField(
+      max_length=10,
+      choices=VISIBILITY_CHOICES,
+      default=PRIVATE
+  )
+
+  DREAMING = 'dreaming'
+  IN_PROCESS = 'in_process'
+  DONE = 'done'
+    
+  STATUS_CHOICES = [
+      (DREAMING, 'Мечтаю'),
+      (IN_PROCESS, 'В процессе'),
+      (DONE, 'Выполнено'),
+  ]
+    
+  status = models.CharField(
+      max_length=20,
+      choices=STATUS_CHOICES,
+      default='Мечтаю'
+  )
   title = models.CharField(max_length=50)
   description = models.TextField(blank=True)
   created_at = models.DateTimeField(auto_now_add=True)
