@@ -52,6 +52,8 @@ class Wish(models.Model):
   last_wish_at = models.DateTimeField(auto_now=True)
   images = models.ImageField(upload_to='images/wish_images', blank=True, null=True)
   location = models.CharField(max_length=200, blank=True)
+  latitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
+  longitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
   gift_url = models.URLField(max_length=1000, blank=True)
   is_done = models.BooleanField(default=False)
   user = models.ForeignKey(User, on_delete=models.CASCADE)
