@@ -21,6 +21,9 @@ class RegisterSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'username', 'email', 'password', 'password_confirm']
+        extra_kwargs = {
+            'password': {'write_only': True}
+        }
 
     def validate(self, attrs):
         """Ensure both passwords match."""
