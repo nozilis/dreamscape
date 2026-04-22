@@ -1,10 +1,11 @@
 from django.shortcuts import render
 from rest_framework.viewsets import ModelViewSet 
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from .models import Category, Wish
-from .serializers import CategorySerializer, WishSerializer
+from .serializers import CategorySerializer, WishSerializer, RegisterSerializer
 from .permissions import UserAccessPermission
+from rest_framework import generics
 
 class CategoryViewSet(ModelViewSet):
     serializer_class = CategorySerializer
@@ -25,3 +26,7 @@ class WishViewSet(ModelViewSet):
         
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
+class RegisterView(generics.CreateAPIView):
+    serializer_class = RegisterSerializer
+    permission_classes = [AllowAny]
