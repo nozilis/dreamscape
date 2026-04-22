@@ -3,7 +3,7 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from .models import Category, Wish, User
-from .serializers import CategorySerializer, WishSerializer, RegisterSerializer
+from .serializers import CategorySerializer, WishSerializer, RegisterSerializer, UserProfileSerializer
 from .permissions import UserAccessPermission
 from rest_framework import generics
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -39,3 +39,9 @@ class RegisterView(generics.CreateAPIView):
         response.data['refresh'] = str(refresh)
         response.data['access'] = str(refresh.access_token)
         return response
+    
+class UserProfileView(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = UserProfileSerializer
+
+    def get_object(self):
+        return self.request.user
