@@ -5,7 +5,6 @@ from rest_framework.permissions import IsAuthenticated
 from .models import Category, Wish
 from .serializers import CategorySerializer, WishSerializer
 from .permissions import UserAccessPermission
-from django.db.models import Q
 
 class CategoryViewSet(ModelViewSet):
     serializer_class = CategorySerializer
