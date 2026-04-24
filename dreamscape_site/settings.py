@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'dreamscape_app',
     'rest_framework',
+    'drf_spectacular'
 ]
 
 MIDDLEWARE = [
@@ -136,8 +137,16 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
-    ]
+    ],
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
 
 MEDIA_URL = '/images/'
 MEDIA_ROOT = BASE_DIR / 'images'
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'dreamscape_API',  
+    'DESCRIPTION': 'Register, CRUD and Profile API', 
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+}
