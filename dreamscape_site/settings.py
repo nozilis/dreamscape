@@ -144,9 +144,13 @@ REST_FRAMEWORK = {
 MEDIA_URL = '/images/'
 MEDIA_ROOT = BASE_DIR / 'images'
 
+SWAGGER_PUBLIC = config('SWAGGER_PUBLIC', cast=bool, default=False)
+
 SPECTACULAR_SETTINGS = {
     'TITLE': 'dreamscape_API',  
     'DESCRIPTION': 'Register, CRUD and Profile API', 
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
+    'SERVE_PUBLIC': SWAGGER_PUBLIC,
+    'SERVE_PERMISSIONS': [] if SWAGGER_PUBLIC else ['rest_framework.permissions.IsAdminUser'],
 }
