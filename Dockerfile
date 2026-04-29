@@ -14,6 +14,7 @@ ARG DB_PORT=5432
 ARG DB_NAME=dummy
 ARG DB_USER=dummy
 ARG DB_PASSWORD=dummy
+ARG ALLOWED_HOSTS=*
 
 RUN python manage.py collectstatic --noinput
 
