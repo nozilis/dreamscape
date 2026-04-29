@@ -1,0 +1,55 @@
+{
+  "info": {
+    "_postman_id": "44cdb09a-cb3c-4dd9-affe-8a22e8a13f20",
+    "name": "dreamscape API testing",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "54277796",
+    "_collection_link": "https://go.postman.co/collection/54277796-44cdb09a-cb3c-4dd9-affe-8a22e8a13f20?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "images api testing",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzc3MDEwNzYxLCJpYXQiOjE3NzcwMTA0NjEsImp0aSI6ImNmNzkxZWUzMWM2MzRjN2NhY2UzMDQxYzRkMTVjNjY5IiwidXNlcl9pZCI6IjMifQ.sbgf0cY5kRPdltNcporaetF--91yZrepe9Hads19fZE",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PATCH",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "avatar",
+              "type": "file",
+              "uuid": "da54daca-a52a-41b0-b61b-dac071249083",
+              "src": "postman-cloud:///1f13fa2f-44ac-4a30-a294-d1fc8bb59828"
+            }
+          ]
+        },
+        "url": {
+          "raw": "http://127.0.0.1:8000/user_profile/",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "user_profile",
+            ""
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

@@ -39,10 +39,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'dreamscape_app',
+    'rest_framework',
+    'drf_spectacular'
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -51,7 +54,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'config.urls'
+ROOT_URLCONF = 'dreamscape_site.urls'
 
 TEMPLATES = [
     {
@@ -68,7 +71,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'config.wsgi.application'
+WSGI_APPLICATION = 'dreamscape_site.wsgi.application'
 
 
 # Database
@@ -128,3 +131,29 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'dreamscape_app.User'
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+    'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+
+MEDIA_URL = '/images/'
+MEDIA_ROOT = BASE_DIR / 'images'
+
+SWAGGER_PUBLIC = config('SWAGGER_PUBLIC', cast=bool, default=False)
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'dreamscape_API',  
+    'DESCRIPTION': 'Register, CRUD and Profile API', 
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+    'SERVE_PUBLIC': SWAGGER_PUBLIC,
+    'SERVE_PERMISSIONS': [] if SWAGGER_PUBLIC else ['rest_framework.permissions.IsAdminUser'],
+}
+
+STATIC_ROOT = BASE_DIR / 'staticfiles'
