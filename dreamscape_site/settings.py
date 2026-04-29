@@ -45,6 +45,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -154,3 +155,5 @@ SPECTACULAR_SETTINGS = {
     'SERVE_PUBLIC': SWAGGER_PUBLIC,
     'SERVE_PERMISSIONS': [] if SWAGGER_PUBLIC else ['rest_framework.permissions.IsAdminUser'],
 }
+
+STATIC_ROOT = BASE_DIR / 'staticfiles'
