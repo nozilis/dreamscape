@@ -1,17 +1,23 @@
 from django.shortcuts import render
 from rest_framework.viewsets import ModelViewSet 
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.permissions import IsAuthenticated, AllowAny, IsAdminUser
 from .models import Category, Wish, User
 from .serializers import CategorySerializer, WishSerializer, RegisterSerializer, UserProfileSerializer
 from .permissions import UserAccessPermission
 from rest_framework import generics
 from rest_framework_simplejwt.tokens import RefreshToken
 from drf_spectacular.utils import extend_schema, OpenApiParameter
+from rest_framework.decorators import action
 
 class CategoryViewSet(ModelViewSet):
     serializer_class = CategorySerializer
     queryset = Category.objects.all()
+
+    def get_permissions(self):
+        if self.action in ['create', 'update', 'partial_update', 'destroy']:
+            return [IsAdminUser()]
+        return [IsAuthenticated()]
 
 class WishViewSet(ModelViewSet):
     serializer_class = WishSerializer
