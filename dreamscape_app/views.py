@@ -7,6 +7,7 @@ from .serializers import CategorySerializer, WishSerializer, RegisterSerializer,
 from .permissions import UserAccessPermission
 from rest_framework import generics
 from rest_framework_simplejwt.tokens import RefreshToken
+from drf_spectacular.utils import extend_schema, OpenApiParameter
 
 class CategoryViewSet(ModelViewSet):
     serializer_class = CategorySerializer
@@ -27,6 +28,19 @@ class WishViewSet(ModelViewSet):
         
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
+    @extend_schema(
+        parameters=[
+            OpenApiParameter(
+                name='user_id',
+                type=int,
+                location=OpenApiParameter.QUERY,
+                description='ID of the user whose wishes to retrieve'
+            )
+        ]
+    )
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
 
 class RegisterView(generics.CreateAPIView):
     serializer_class = RegisterSerializer
