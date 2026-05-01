@@ -4,7 +4,7 @@
 
 Dreamscape is a personal wishlist and dream-tracking service. Active wishes float like clouds above you, always visible, always within reach. Fulfilled dreams become stars — glowing reminders of everything you've already achieved.
 
-The idea came from a personal need: there was no comfortable place to gather life goals in one spot, something that would actually inspire rather than just remind. Todo lists felt too utilitarian. Dreamscape is built to feel like a space, not a tool.
+The idea came from a personal need: there was no comfortable place to gather life goals in one spot, something that would actually inspire rather than just remind. Todo lists felt too simple. Dreamscape is built to feel like a space, not a tool.
 
 ---
 
