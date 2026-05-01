@@ -18,13 +18,15 @@ class WishViewSet(ModelViewSet):
     permission_classes = [IsAuthenticated, UserAccessPermission]
 
     def get_queryset(self):
-        user_id = int(self.request.query_params.get('user_id', 0))
+        user_id = self.request.query_params.get('user_id')  
+        if user_id is None:
+            return Wish.objects.filter(user=self.request.user).order_by('-created_at')
+        user_id = int(user_id)  
         if user_id == self.request.user.id:
             return Wish.objects.filter(user=self.request.user).order_by('-created_at')
-        else:
-            return Wish.objects.filter(
-                user_id=user_id,
-                visibility__in=['public', 'link'])
+        return Wish.objects.filter(
+            user_id=user_id,
+            visibility__in=['public', 'link'])
         
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
