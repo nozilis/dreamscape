@@ -13,7 +13,7 @@ class WishSerializer(serializers.ModelSerializer):
     )
     class Meta:
         model = Wish
-        fields = ['title', 'description', 'last_wish_at', 'images', 'is_done', 'location', 'latitude', 'longitude', 'gift_url', 'category', 'category_id']
+        fields = ['id', 'title', 'description', 'last_wish_at', 'images', 'is_done', 'location', 'latitude', 'longitude', 'gift_url', 'category', 'category_id']
 
 class RegisterSerializer(serializers.ModelSerializer):
     password_confirm = serializers.CharField(write_only=True)
