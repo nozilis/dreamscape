@@ -9,6 +9,7 @@ from rest_framework import generics
 from rest_framework_simplejwt.tokens import RefreshToken
 from drf_spectacular.utils import extend_schema, OpenApiParameter
 from rest_framework.decorators import action
+from .tasks import greetings_email
 
 class CategoryViewSet(ModelViewSet):
     serializer_class = CategorySerializer
@@ -60,6 +61,7 @@ class RegisterView(generics.CreateAPIView):
         refresh = RefreshToken.for_user(user)
         response.data['refresh'] = str(refresh)
         response.data['access'] = str(refresh.access_token)
+        greetings_email.delay(user.email)
         return response
     
 class UserProfileView(generics.RetrieveUpdateDestroyAPIView):
