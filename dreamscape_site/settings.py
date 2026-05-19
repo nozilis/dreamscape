@@ -159,3 +159,6 @@ SPECTACULAR_SETTINGS = {
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 CSRF_TRUSTED_ORIGINS = config('CSRF_TRUSTED_ORIGINS', default='', cast=lambda v: [s.strip() for s in v.split(',') if s])
+
+CELERY_BROKER_URL = config('REDIS_URL') 
+CELERY_RESULT_BACKEND = config('REDIS_URL')
