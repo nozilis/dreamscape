@@ -10,6 +10,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from drf_spectacular.utils import extend_schema, OpenApiParameter
 from rest_framework.decorators import action
 from .tasks import greetings_email
+from django.core.cache import cache
 
 class CategoryViewSet(ModelViewSet):
     serializer_class = CategorySerializer
@@ -31,12 +32,26 @@ class WishViewSet(ModelViewSet):
         user_id = int(user_id)  
         if user_id == self.request.user.id:
             return Wish.objects.filter(user=self.request.user).order_by('-created_at')
-        return Wish.objects.filter(
-            user_id=user_id,
-            visibility__in=['public', 'link'])
-        
+        cache_response = cache.get(f'wishlist_{user_id}')
+        if cache_response is not None:
+            return cache_response
+        else:
+            new_cache_data = Wish.objects.filter(user_id=user_id, visibility__in=['public', 'link'])
+            cache.set(f'wishlist_{user_id}', new_cache_data, timeout=3600)
+        return new_cache_data
+
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+        cache.delete(f'wishlist_{self.request.user.id}')
+
+    def partial_update(self, request, *args, **kwargs): 
+        response = super().partial_update(request, *args, **kwargs)
+        cache.delete(f'wishlist_{self.request.user.id}')
+        return response
+
+    def perform_destroy(self, instance):
+        super().perform_destroy(instance)
+        cache.delete(f'wishlist_{self.request.user.id}')
 
     @extend_schema(
         parameters=[
