@@ -15,6 +15,7 @@ env:
   DB_PORT: 5432
   SECRET_KEY: ${{ secrets.SECRET_KEY }}
   REDIS_URL: redis://localhost:6379/0
+  FROM_EMAIL: test@example.com
 
 jobs:
   build:
