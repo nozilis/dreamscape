@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 from decouple import config
+from celery.schedules import crontab
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -159,3 +160,21 @@ SPECTACULAR_SETTINGS = {
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 CSRF_TRUSTED_ORIGINS = config('CSRF_TRUSTED_ORIGINS', default='', cast=lambda v: [s.strip() for s in v.split(',') if s])
+
+CELERY_BROKER_URL = config('REDIS_URL') 
+CELERY_RESULT_BACKEND = config('REDIS_URL')
+
+CELERY_BEAT_SCHEDULE = {
+    'monthly_dreaming_status_reminder': {
+        'task': 'dreamscape_app.tasks.dreaming_status_reminder',
+        'schedule': crontab(hour=9, day_of_week=1)  
+    }
+}
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.redis.RedisCache',
+        'LOCATION': config('REDIS_URL'),
+        'TIMEOUT': 300 
+    }
+}
