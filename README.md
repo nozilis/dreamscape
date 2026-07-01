@@ -17,6 +17,8 @@ The idea came from a personal need: there was no comfortable place to gather lif
 - **Status Tracking** — mark wishes as dreaming, in progress, or done
 - **User Profiles** — avatar, bio, and background image support
 - **Image Upload** — attach images to wishes
+- **Email Notifications** — welcome email on registration, weekly reminders for pending wishes
+- **Price Caching** — Redis-powered caching for public wishlists
 - **Public API** — fully documented REST API ready for any frontend
 
 ---
@@ -28,9 +30,12 @@ The idea came from a personal need: there was no comfortable place to gather lif
 | Backend | Python, Django, Django REST Framework |
 | Auth | JWT via djangorestframework-simplejwt |
 | Database | PostgreSQL |
+| Cache & Broker | Redis |
+| Background Tasks | Celery, Celery Beat |
 | Media | Pillow, WhiteNoise |
 | Documentation | drf-spectacular (Swagger UI) |
 | Testing | pytest, pytest-django |
+| CI | GitHub Actions |
 | Infrastructure | Docker, docker-compose |
 | Deploy | Railway |
 
@@ -41,6 +46,7 @@ The idea came from a personal need: there was no comfortable place to gather lif
 ### Requirements
 - Python 3.13
 - PostgreSQL
+- Redis
 - Docker (optional)
 
 ### Local Setup
@@ -65,6 +71,12 @@ python manage.py migrate
 
 # Run the server
 python manage.py runserver
+
+# Run Celery worker (separate terminal)
+celery -A dreamscape_site worker -l info
+
+# Run Celery Beat scheduler (separate terminal)
+celery -A dreamscape_site beat -l info
 ```
 
 ### Docker Setup
@@ -89,6 +101,13 @@ DB_PASSWORD=your_db_password
 DB_HOST=localhost
 DB_PORT=5432
 SWAGGER_PUBLIC=True
+REDIS_URL=redis://localhost:6379/0
+FROM_EMAIL=your@gmail.com
+EMAIL_HOST=smtp.gmail.com
+EMAIL_PORT=587
+EMAIL_HOST_USER=your@gmail.com
+EMAIL_HOST_PASSWORD=your_app_password
+EMAIL_USE_TLS=True
 ```
 
 ---
@@ -205,11 +224,26 @@ avatar: <file>
 
 ---
 
+## ⚙️ Background Tasks
+
+Celery Beat runs two scheduled tasks:
+
+| Task | Schedule | Description |
+|---|---|---|
+| `dreaming_status_reminder` | Every Monday at 9:00 | Sends email to users with wishes in `dreaming` status |
+| Welcome email | On registration | Sends a greeting email to new users |
+
+Redis serves as both the message broker and cache backend for public wishlists.
+
+---
+
 ## 🧪 Running Tests
 
 ```bash
 pytest
 ```
+
+CI runs automatically on every push to `develop` and on pull requests to `main` via GitHub Actions.
 
 ---
 
